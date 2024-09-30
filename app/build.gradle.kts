@@ -59,6 +59,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.browser)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +71,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Retrofit 라이브러리
+    implementation ("com.squareup.retrofit2:retrofit:2.6.4")
+    // Gson 변환기 라이브러리
+    implementation ("com.squareup.retrofit2:converter-gson:2.6.4")
+    // Scalars 변환기 라이브러리
+    implementation ("com.squareup.retrofit2:converter-scalars:2.6.4")
+
 }
