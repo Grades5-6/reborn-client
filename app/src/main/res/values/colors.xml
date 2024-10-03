@@ -10,8 +10,6 @@
 
     <color name="rb_deep_green">#47572F</color>
     <color name="rb_light_green">#93B65E</color>
-    <color name="rb_beige">#93B65E</color>
-
-
+    <color name="rb_beige">#FFFBDC</color>
 
 </resources>
