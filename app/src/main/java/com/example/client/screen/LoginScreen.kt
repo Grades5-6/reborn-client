@@ -36,7 +36,6 @@ fun LoginScreen() {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
             .background(color = Color(0xFFFFFBDC))
-
     ) {
         Image(
             painter = painterResource(id = R.drawable.icon_rebornlogo),
