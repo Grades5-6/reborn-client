@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".OnBoarding3rdFragment"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/ll_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="99dp">
+
+        <TextView
+            android:id="@+id/tv_reborn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="새로운 기회"
+            android:textColor="@color/rb_deep_green"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="0dp"
+            />
+        <TextView
+            android:id="@+id/tv_reborn_lasting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="를"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_marginTop="0dp"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_ll_lasting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="찾아보세요"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_tv_main"/>
+
+    <TextView
+        android:id="@+id/tv_reborn_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취미부터 자격증까지,\n새로운 분야의 교육을 간편하게 찾아보세요."
+        android:textColor="#898A8D"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_ll_lasting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="28dp"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_onboarding3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_reborn_detail"
+        android:layout_marginTop="61dp"
+        />
+    <ImageView
+        android:id="@+id/iv_cancle_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="24dp"
+        />
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="80dp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cl_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewPager_main"
+        >
+
+        <ImageView
+            android:id="@+id/indicator1"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/shape_circle_gray"/>
+
+        <ImageView
+            android:id="@+id/indicator2"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/indicator1"
+            app:layout_constraintTop_toTopOf="@id/indicator1"
+            app:layout_constraintBottom_toBottomOf="@id/indicator1"
+            android:src="@drawable/shape_circle_gray"/>
+
+        <ImageView
+            android:id="@+id/indicator3"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/indicator2"
+            app:layout_constraintTop_toTopOf="@id/indicator1"
+            app:layout_constraintBottom_toBottomOf="@id/indicator1"
+            android:src="@drawable/shape_circle_green"/>
+
+        <ImageView
+            android:id="@+id/indicator4"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/indicator3"
+            app:layout_constraintTop_toTopOf="@id/indicator1"
+            app:layout_constraintBottom_toBottomOf="@id/indicator1"
+            android:src="@drawable/shape_circle_gray"/>
+
+        <ImageView
+            android:id="@+id/indicator5"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/indicator4"
+            app:layout_constraintTop_toTopOf="@id/indicator1"
+            app:layout_constraintBottom_toBottomOf="@id/indicator1"
+            android:src="@drawable/shape_circle_gray"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.tools.core)
     implementation(libs.volley)
+    implementation(libs.androidx.paging.common.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,5 +73,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.accompanist:accompanist-pager:0.20.1")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.20.1")
+    implementation("com.google.android.material:material:1.3.0-alpha03")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 
 }
