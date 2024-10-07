@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".OnBoarding2ndFragment"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/ll_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="99dp">
+
+        <TextView
+            android:id="@+id/tv_reborn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="당신의 전문성"
+            android:textColor="@color/rb_deep_green"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="0dp"
+            />
+        <TextView
+            android:id="@+id/tv_reborn_lasting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="을"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_marginTop="0dp"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_ll_lasting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="활용하세요"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_tv_main"/>
+
+    <TextView
+        android:id="@+id/tv_reborn_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지역별 맞춤 공고부터 지원서 준비까지,\n당신의 다음 커리어를 함께해요"
+        android:textColor="#898A8D"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_ll_lasting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="28dp"
+        />
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_onboarding2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_reborn_detail"
+        android:layout_marginTop="61dp"
+        />
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="80dp"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
