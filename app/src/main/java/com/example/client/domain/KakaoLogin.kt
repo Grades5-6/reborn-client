@@ -58,9 +58,16 @@ private fun sendTokenToServer(authorizationCode: String, context: Context) {
             if (response.isSuccessful) {
                 Log.d("TokenSend", "Token sent successfully!")
 
-                val intent = Intent(context, OnBoardingActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                context.startActivity(intent)
+                //로그인 성공하면,, 화면 전환
+                if(!OnBoardingActivity.OnboardingPreferences.hasSeenOnboarding(context)){
+                    val intent = Intent(context, OnBoardingActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    context.startActivity(intent)
+                } else {
+//                    val intent = Intent(context, ::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    context.startActivity(intent)
+                }
 
             } else {
                 Log.e("TokenSend", "Failed to send token: ${response.code()}")

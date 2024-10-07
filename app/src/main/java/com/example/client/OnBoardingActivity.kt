@@ -1,5 +1,6 @@
 package com.example.client
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -10,6 +11,24 @@ class OnBoardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOnBoardingBinding
     private lateinit var adapter : OnBoardingAdapter
+
+    object OnboardingPreferences {
+        private const val PREFS_NAME = "onboarding_prefs"
+        private const val KEY = "has_seen_onboarding"
+
+        fun hasSeenOnboarding(context: Context):Boolean{
+            val sharedPreferences = context.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
+            return sharedPreferences.getBoolean(KEY,false)
+        }
+
+        fun setHasSeenOnboarding(context: Context){
+            val sharedPreferences=context.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
+            with(sharedPreferences.edit()){
+                putBoolean(KEY, true)
+                apply()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
