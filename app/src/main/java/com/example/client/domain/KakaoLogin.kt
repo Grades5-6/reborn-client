@@ -1,13 +1,18 @@
 package com.example.client.domain
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import com.example.client.OnBoardingActivity
 import com.kakao.sdk.user.UserApiClient
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
+
 
 // 데이터 모델
 data class KakaoLoginRequest(
@@ -41,19 +46,24 @@ fun loginWithKakao(context: Context) {
             Log.e("Login", "Login Failed: ${error.message}")
         } else if (token != null) {
             Log.d("Login code", token.accessToken)
-            sendTokenToServer(token.accessToken) // accessToken 대신 authorizationCode 사용
+            sendTokenToServer(token.accessToken,context) // accessToken 대신 authorizationCode 사용
         }
     }
 }
 
 // [todo]: 서버에 authorizationCode 전송
-private fun sendTokenToServer(authorizationCode: String) {
+private fun sendTokenToServer(authorizationCode: String, context: Context) {
     val request = KakaoLoginRequest(authorizationCode)
 
     RetrofitClient.instance.sendKakaoToken(request).enqueue(object : retrofit2.Callback<Void> {
         override fun onResponse(call: Call<Void>, response: retrofit2.Response<Void>) {
             if (response.isSuccessful) {
                 Log.d("TokenSend", "Token sent successfully!")
+
+                val intent = Intent(context,OnBoardingActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                context.startActivity(intent)
+
             } else {
                 Log.e("TokenSend", "Failed to send token: ${response.code()}")
             }
