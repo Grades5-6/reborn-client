@@ -5,8 +5,6 @@ import android.content.Intent
 import android.util.Log
 import com.example.client.OnBoardingActivity
 import com.kakao.sdk.user.UserApiClient
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -60,7 +58,7 @@ private fun sendTokenToServer(authorizationCode: String, context: Context) {
             if (response.isSuccessful) {
                 Log.d("TokenSend", "Token sent successfully!")
 
-                val intent = Intent(context,OnBoardingActivity::class.java)
+                val intent = Intent(context, OnBoardingActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 context.startActivity(intent)
 

@@ -1,14 +1,10 @@
 package com.example.client
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.client.databinding.ActivityOnBoardingBinding
+import com.example.client.onboarding.OnBoardingAdapter
 
 class OnBoardingActivity : AppCompatActivity() {
 
