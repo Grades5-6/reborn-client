@@ -19,7 +19,7 @@
         <!-- [todo] : 카카오 SDK 초기화를 위한 메타데이터 추가 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="47201909a709c3061d6001af828992d3" /> <!-- Client ID -->
+            android:value="ocJ349RNSi05UOFsTq+xBE54jWU=" /> <!-- Client ID -->
 
         <activity
             android:name=".MainActivity"
