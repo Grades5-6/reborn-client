@@ -20,6 +20,10 @@ android {
         }
     }
 
+    buildFeatures{
+        viewBinding=true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -50,7 +55,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.kakao.sdk:v2-all:2.20.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -59,6 +64,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.tools.core)
+    implementation(libs.volley)
+    implementation(libs.androidx.paging.common.android)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +77,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.compose.animation:animation:1.4.0")
+    implementation("androidx.navigation:navigation-compose:2.5.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.accompanist:accompanist-pager:0.20.1")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.20.1")
+    implementation("com.google.android.material:material:1.3.0-alpha03")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.tbuonomo:dotsindicator:5.0")
+
 }
