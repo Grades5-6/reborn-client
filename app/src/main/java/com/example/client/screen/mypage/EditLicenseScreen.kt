@@ -53,7 +53,7 @@ fun EditLicenseScreen(
     val isLoading by sharedViewModel.isLoading.collectAsState()
     val errorMessage by sharedViewModel.errorMessage.collectAsState()
 
-    val selectedLicenses by editLicenseViewModel.selectedLicenses.collectAsState()
+    val selectedLicenses by editLicenseViewModel.selectedLicenses.collectAsState(TestUserInfo.LICENSES)
     val selectedLicensesCount = selectedLicenses.size
 
     LaunchedEffect(Unit) {
@@ -127,18 +127,21 @@ fun EditLicenseScreen(
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(400.dp)
+                                    .height(520.dp)
                             ) {
                                 LazyColumn(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                 ) {
                                     items(licensesState) { license ->
+                                        val isSelected by editLicenseViewModel.isLicenseSelectedFlow(
+                                            license
+                                        ).collectAsState()
                                         CertificateComponent(
                                             type = license.seriesnm,
                                             name = license.jmfldnm,
                                             date = license.expirationDate ?: "2024-12-05",
-                                            isSelected = if(TestUserInfo.LICENSES.contains(license)) true else false,
+                                            isSelected = isSelected,
                                             onItemSelected = { selectedLicense ->
                                                 editLicenseViewModel.toggleLicencesSelection(selectedLicense)
                                             },

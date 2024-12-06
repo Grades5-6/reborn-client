@@ -6,13 +6,24 @@ import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.repository.mypage.EditLicenseRepository
 import com.example.client.domain.TestUserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class EditLicenseViewModel(private val repository: EditLicenseRepository) : ViewModel() {
     private val _selectedLicenses = MutableStateFlow<List<LicensesGetResponse>>(emptyList())
     val selectedLicenses: StateFlow<List<LicensesGetResponse>> = _selectedLicenses
+
+    fun isLicenseSelectedFlow(license: LicensesGetResponse): StateFlow<Boolean> {
+        return _selectedLicenses.map { it.contains(license) }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = false
+        )
+    }
 
     fun toggleLicencesSelection(license: LicensesGetResponse) {
         val currentList = _selectedLicenses.value.toMutableList()
