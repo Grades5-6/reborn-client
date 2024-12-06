@@ -524,6 +524,7 @@ fun JobOnBoardingScreen(
                         onClick = {
                             val sex = selectGender
                             val year = selectBirth?.toInt()
+                            println(sex + ":" + year.toString())
                             if (sex != null && year != null) {
                                 viewModel.submitJobOnboarding(sex, year)
                                 TestUserInfo.SEX=sex

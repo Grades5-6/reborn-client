@@ -43,8 +43,8 @@ fun BottomNavigationBar(navController: NavController) {
                     modifier = Modifier.background(color = Color.White),
                     selected = currentRoute == navItem.route,
                     onClick = {
-                        if(navItem.route.equals("JobMain")){
-                            if(TestUserInfo.SEX.isNullOrEmpty() || TestUserInfo.YEAR == 0){
+                        if(navItem.route == "JobMain"){
+                            if(TestUserInfo.SEX.isNullOrEmpty() || TestUserInfo.YEAR == null){
                                 navController.navigate("JobOnboarding")
                                 {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -57,10 +57,11 @@ fun BottomNavigationBar(navController: NavController) {
                                     }
                                 }
                             }
-                        }
-                        navController.navigate(navItem.route)
-                        {
-                            popUpTo(navController.graph.findStartDestination().id) {
+                        }else{
+                            navController.navigate(navItem.route)
+                            {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                }
                             }
                         }
                     },

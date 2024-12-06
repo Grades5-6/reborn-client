@@ -178,6 +178,10 @@ fun JobMainScreen(
                                             buttonText = TestUserInfo.REGION,
                                             onClick = {}
                                         )
+                                        KeywordButtonComponent(
+                                            buttonText = "${TestUserInfo.YEAR} / ${TestUserInfo.SEX}",
+                                            onClick = {}
+                                        )
                                     }
                                     items(TestUserInfo.INTEREST) { interest ->
                                         Spacer(modifier = Modifier.size(10.dp))

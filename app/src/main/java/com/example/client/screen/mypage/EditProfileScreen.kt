@@ -174,13 +174,13 @@ fun EditProfileScreen(
                     onClick = {
                         selectedImageUri?.let { uri ->
                             editProfileViewModel.setUserProfile(
-                                nickName = editNickname,
-                                profileImg = uri.toString(),  // URI 문자열로 전달
+                                nickName = editNickname.ifEmpty { nickname.toString() },
+                                profileImg = uri.toString(),
                                 employmentStatus = editEmploymentStatus
                             )
                         } ?: run {
                             editProfileViewModel.setUserProfile(
-                                nickName = editNickname,
+                                nickName = editNickname.ifEmpty { nickname.toString() },
                                 profileImg = TestUserInfo.USERIMG,
                                 employmentStatus = editEmploymentStatus
                             )
