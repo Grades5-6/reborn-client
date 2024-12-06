@@ -48,13 +48,17 @@ fun CertificateButtonComponent(
                 text = license.seriesnm,
                 color = Color(0xFFDCF5B5),
                 fontSize = 16.sp,
+                minLines = 1,
+                maxLines = 1,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = license.jmfldnm,
                 color = Color(0xFFFFFBDC),
-                fontSize = 24.sp,
+                fontSize = 21.sp,
+                minLines = 1,
+                maxLines = 1,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(24.dp))
