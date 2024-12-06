@@ -1,7 +1,6 @@
 package com.example.client.data.api
 
 import com.example.client.data.model.request.JobOnBoardingRequest
-import com.example.client.data.model.request.JobPostLicenseRequest
 import com.example.client.data.model.request.KakaoLoginRequest
 import com.example.client.data.model.request.MainOnBoardingRequest
 import com.example.client.data.model.response.LicensesGetResponse
@@ -16,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     /** 카카오 로그인 */
@@ -37,7 +37,7 @@ interface ApiService {
     suspend fun searchJob(): Response<Void>
 
     @GET("jobs/posts/licenses") //사용자가 클릭한 자격증 이름으로 request
-    suspend fun getJobLicense(@Body request: JobPostLicenseRequest): Response<List<JobPostResponse>>
+    suspend fun getJobLicense(@Query("jmfldnm") jmfldnm: String): Response<List<JobPostResponse>>
 
     /** 자격증 리스트 소환 */
     @GET("licenses")

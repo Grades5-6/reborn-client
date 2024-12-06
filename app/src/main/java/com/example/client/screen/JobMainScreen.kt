@@ -2,6 +2,7 @@ package com.example.client.screen
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -252,42 +253,131 @@ fun JobMainScreen(
                             }
                         }
                         1 -> {
+                            var isLicenseView by remember { mutableStateOf(true) }
+                            val isLoading by jobPostLicenseViewModel.isLoading.collectAsState()
+                            val error by jobPostLicenseViewModel.error.collectAsState()
+                            val jobs by jobPostLicenseViewModel.jobList.collectAsState()
+
+                            // 디버깅을 위한 로그 추가
+                            LaunchedEffect(jobs) {
+                                Log.d("JobMainScreen", "Jobs updated: ${jobs.size}")
+                            }
+
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .heightIn(min = 800.dp)
                                     .padding(top = 25.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(
-                                    text = "확인하고 싶은 자격증을 선택해주세요!",
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        lineHeight = 40.sp,
-                                        fontFamily = FontFamily(Font(R.font.pretendardextrabold)),
-                                        fontWeight = FontWeight(600),
-                                        color = Color(0xFF000000),
-                                        textAlign = TextAlign.Center,
-                                    )
-                                )
-                                Spacer(modifier = Modifier.size(15.dp))
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(1000.dp)
-                                        .padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    items(TestUserInfo.LICENSES) { license ->
-                                        CertificateButtonComponent(
-                                            license = LicensesGetResponse(
-                                                jmfldnm = license.jmfldnm,
-                                                seriesnm = license.seriesnm,
-                                                expirationDate = license.expirationDate
-                                            ),
-                                            onClick = { /* 자격증 상세 정보로 이동 */ }
+                                if (isLicenseView) {
+                                    Text(
+                                        text = "확인하고 싶은 자격증을 선택해주세요!",
+                                        style = TextStyle(
+                                            fontSize = 20.sp,
+                                            lineHeight = 40.sp,
+                                            fontFamily = FontFamily(Font(R.font.pretendardextrabold)),
+                                            fontWeight = FontWeight(600),
+                                            color = Color(0xFF000000),
+                                            textAlign = TextAlign.Center,
                                         )
+                                    )
+                                    Spacer(modifier = Modifier.size(15.dp))
+                                    LazyVerticalGrid(
+                                        columns = GridCells.Fixed(2),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1000.dp)
+                                            .padding(horizontal = 8.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        items(TestUserInfo.LICENSES) { license ->
+                                            CertificateButtonComponent(
+                                                license = LicensesGetResponse(
+                                                    jmfldnm = license.jmfldnm,
+                                                    seriesnm = license.seriesnm,
+                                                    expirationDate = license.expirationDate
+                                                ),
+                                                onClick = {
+                                                    jobPostLicenseViewModel.getJobLicense(license.jmfldnm)
+                                                    isLicenseView = false
+                                                }
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        TextButton(
+                                            onClick = { isLicenseView = true },
+                                            modifier = Modifier.padding(bottom = 8.dp)
+                                        ) {
+                                            Text(
+                                                text = "자격증 목록으로 돌아가기",
+                                                style = TextStyle(
+                                                    fontSize = 20.sp,
+                                                    fontFamily = FontFamily(Font(R.font.pretendardregular)),
+                                                    fontWeight = FontWeight(600),
+                                                    color = Color(0xFF688142),
+                                                )
+                                            )
+                                        }
+                                        
+                                        when {
+                                            isLoading -> {
+                                                CircularProgressIndicator(
+                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                    color = Color(0xFF48582F)
+                                                )
+                                            }
+                                            error != null -> {
+                                                Text(
+                                                    text = error ?: "오류가 발생했습니다",
+                                                    modifier = Modifier
+                                                        .align(Alignment.CenterHorizontally)
+                                                        .padding(16.dp),
+                                                    color = Color.Red
+                                                )
+                                            }
+                                            jobs.isEmpty() -> {
+                                                Text(
+                                                    text = "해당 자격증과 관련된 일자리가 없습니다",
+                                                    modifier = Modifier
+                                                        .align(Alignment.CenterHorizontally)
+                                                        .padding(16.dp),
+                                                    style = TextStyle(
+                                                        fontSize = 16.sp,
+                                                        fontFamily = FontFamily(Font(R.font.pretendardregular))
+                                                    )
+                                                )
+                                            }
+                                            else -> {
+                                                jobs.forEach { job ->
+                                                    // 디버깅을 위한 로그 추가
+                                                    Log.d("JobMainScreen", "Rendering job: ${job.companyName}")
+                                                    JobListComponent(
+                                                        companyName = job.companyName ?: "회사명 없음",
+                                                        jobTitle = job.jobTitle ?: "제목 없음",
+                                                        location = job.workAddr ?: "주소 없음",
+                                                        onClick = {
+                                                            if (job.hmUrl != null) {
+                                                                if (!job.hmUrl.startsWith("https://")) {
+                                                                    job.hmUrl = "https://${job.hmUrl}"
+                                                                }
+                                                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(job.hmUrl))
+                                                                context.startActivity(intent)
+                                                            } else {
+                                                                Toast.makeText(context, "일자리 상세 페이지가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                                                            }
+                                                        }
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
