@@ -47,6 +47,7 @@ import com.example.client.component.all.ButtonComponent
 import com.example.client.component.all.CertificateComponent
 import com.example.client.component.all.DropDownMenuComponent
 import com.example.client.component.onboarding.PageIndexComponent
+import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.viewmodel.JobOnBoardingViewModel
 import com.example.client.data.model.viewmodel.SharedCertificationViewModel
 import com.example.client.domain.TestUserInfo
@@ -529,7 +530,14 @@ fun JobOnBoardingScreen(
                                 viewModel.submitJobOnboarding(sex, year)
                                 TestUserInfo.SEX=sex
                                 TestUserInfo.YEAR=year
-                                TestUserInfo.LICENSES=selectedLicenses.map { it.jmfldnm }
+                                TestUserInfo.LICENSES.clear()
+                                TestUserInfo.LICENSES.addAll(selectedLicenses.map { license ->
+                                    LicensesGetResponse(
+                                        jmfldnm = license.jmfldnm,
+                                        seriesnm = license.seriesnm,
+                                        expirationDate = license.expirationDate
+                                    )
+                                })
                                 navController.navigate(NavRoutes.JobMain.route) {
                                     popUpTo(NavRoutes.JobOnboarding.route) { inclusive = true }
                                 }

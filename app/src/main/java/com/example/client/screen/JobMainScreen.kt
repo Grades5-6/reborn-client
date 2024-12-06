@@ -56,7 +56,11 @@ import com.example.client.component.all.TabLayoutComponent
 import com.example.client.data.model.viewmodel.JobPostViewModel
 import com.example.client.domain.TestUserInfo
 import androidx.compose.ui.platform.LocalContext
+import com.example.client.component.mypage.CertificateItemComponent
+import com.example.client.data.model.response.LicenseResponse
+import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.viewmodel.JobPostLicenseViewModel
+import java.util.Date
 
 @Composable
 fun JobMainScreen(
@@ -275,19 +279,13 @@ fun JobMainScreen(
                                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    val certList = listOf(
-                                        Triple("한국고용정보원", "고용서비스", "25.07.15"),
-                                        Triple("한국산업인력공단", "지게차운전", "25.08.20"),
-                                        Triple("대한상공회의소", "컴퓨터활용능력", "25.09.10"),
-                                        Triple("한국고용정보원", "직업상담사", "25.10.15")
-                                        // ... 더 많은 데이터
-                                    )
-
-                                    items(certList) { (dept, name, date) ->
+                                    items(TestUserInfo.LICENSES) { license ->
                                         CertificateButtonComponent(
-                                            certificateDepartment = dept,
-                                            certificateName = name,
-                                            date = date,
+                                            license = LicensesGetResponse(
+                                                jmfldnm = license.jmfldnm,
+                                                seriesnm = license.seriesnm,
+                                                expirationDate = license.expirationDate
+                                            ),
                                             onClick = { /* 자격증 상세 정보로 이동 */ }
                                         )
                                     }

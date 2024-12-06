@@ -16,12 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.client.R
+import com.example.client.data.model.response.LicensesGetResponse
 
 @Composable
 fun CertificateButtonComponent(
-    certificateDepartment: String,
-    certificateName: String,
-    date: String,
+    license: LicensesGetResponse,
     onClick: () -> Unit
 ) {
     var isOverlayVisible by remember { mutableStateOf(false) }
@@ -46,14 +45,14 @@ fun CertificateButtonComponent(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = certificateDepartment,
+                text = license.seriesnm,
                 color = Color(0xFFDCF5B5),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = certificateName,
+                text = license.jmfldnm,
                 color = Color(0xFFFFFBDC),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
@@ -68,12 +67,14 @@ fun CertificateButtonComponent(
                     modifier = Modifier.padding(end = 8.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = date,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                license.expirationDate?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
 
