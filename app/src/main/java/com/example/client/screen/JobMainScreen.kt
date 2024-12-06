@@ -56,10 +56,12 @@ import com.example.client.component.all.TabLayoutComponent
 import com.example.client.data.model.viewmodel.JobPostViewModel
 import com.example.client.domain.TestUserInfo
 import androidx.compose.ui.platform.LocalContext
+import com.example.client.data.model.viewmodel.JobPostLicenseViewModel
 
 @Composable
 fun JobMainScreen(
     jobPostViewModel: JobPostViewModel,
+    jobPostLicenseViewModel: JobPostLicenseViewModel,
     navController: NavController
 ) {
     // Context를 상위 레벨에서 가져옴

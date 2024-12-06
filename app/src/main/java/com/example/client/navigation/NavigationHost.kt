@@ -47,6 +47,7 @@ fun NavigationHost(
         composable(NavRoutes.JobMain.route) {
             JobMainScreen(
                 jobPostViewModel = viewModels.jobPostViewModel,
+                jobPostLicenseViewModel = viewModels.jobPostLicenseViewModel,
                 navController = navController
             )
         }
