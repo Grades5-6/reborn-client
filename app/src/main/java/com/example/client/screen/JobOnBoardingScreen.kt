@@ -452,9 +452,7 @@ fun JobOnBoardingScreen(
                                 buttonText = if (selectedLicensesCount == 0) "추가하기" else "${selectedLicensesCount}개 추가완료하기",
                                 buttonColorType = if (selectedLicensesCount == 0) ButtonColorEnum.LightGreen else ButtonColorEnum.Green,
                                 onClick = {
-                                    if (selectedLicensesCount != 0) {
-                                        currentQuestionIndex++
-                                    }
+                                    currentQuestionIndex++
                                 },
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
