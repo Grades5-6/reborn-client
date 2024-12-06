@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">client</string>
+    <string name="loading_message">%s님께\n추천드릴 공고를\n찾고 있어요</string>
 </resources>
