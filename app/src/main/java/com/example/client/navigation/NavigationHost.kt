@@ -91,6 +91,7 @@ fun NavigationHost(
 
         composable(NavRoutes.MyPageLicense.route) {
             EditLicenseScreen(
+                sharedViewModel = viewModels.sharedCertificationViewModel,
                 editLicenseViewModel = viewModels.editLicenseViewModel,
                 navController = navController
             )
