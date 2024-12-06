@@ -25,6 +25,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.client.R
+import com.example.client.domain.TestUserInfo
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -36,12 +37,27 @@ fun BottomNavigationBar(navController: NavController) {
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
-        if(!(currentRoute.equals("Login") || currentRoute.equals("MainOnboarding"))){
+        if(!(currentRoute.equals("Login") || currentRoute.equals("MainOnboarding")|| currentRoute.equals("JobOnboarding"))){
             NavBarItems.BarItems.forEach { navItem ->
                 NavigationBarItem(
                     modifier = Modifier.background(color = Color.White),
                     selected = currentRoute == navItem.route,
                     onClick = {
+                        if(navItem.route.equals("JobMain")){
+                            if(TestUserInfo.SEX.isNullOrEmpty() || TestUserInfo.YEAR == 0){
+                                navController.navigate("JobOnboarding")
+                                {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                    }
+                                }
+                            }else{
+                                navController.navigate("JobMain")
+                                {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                    }
+                                }
+                            }
+                        }
                         navController.navigate(navItem.route)
                         {
                             popUpTo(navController.graph.findStartDestination().id) {

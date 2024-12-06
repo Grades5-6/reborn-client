@@ -526,9 +526,9 @@ fun JobOnBoardingScreen(
                             val year = selectBirth?.toInt()
                             if (sex != null && year != null) {
                                 viewModel.submitJobOnboarding(sex, year)
-                                TestUserInfo.sex=sex
-                                TestUserInfo.year=year
-                                TestUserInfo.licenses=selectedLicenses.map { it.jmfldnm }
+                                TestUserInfo.SEX=sex
+                                TestUserInfo.YEAR=year
+                                TestUserInfo.LICENSES=selectedLicenses.map { it.jmfldnm }
                                 navController.navigate(NavRoutes.JobMain.route) {
                                     popUpTo(NavRoutes.JobOnboarding.route) { inclusive = true }
                                 }

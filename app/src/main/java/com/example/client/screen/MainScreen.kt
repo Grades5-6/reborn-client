@@ -144,7 +144,7 @@ fun MainScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(top = 20.dp, start = 5.dp)
                         .clickable {
-                            if (TestUserInfo.sex.isNullOrEmpty()) {
+                            if(TestUserInfo.SEX.isNullOrEmpty() || TestUserInfo.YEAR == 0){
                                 navController.navigate("JobOnboarding")
                             } else {
                                 navController.navigate("JobMain")
