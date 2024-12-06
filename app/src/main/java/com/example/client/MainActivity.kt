@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.example.client.data.api.RetrofitClient
+import com.example.client.data.model.request.mypage.EditLicenseRequest
 import com.example.client.data.model.viewmodel.JobOnBoardingViewModel
 import com.example.client.data.model.viewmodel.JobOnBoardingViewModelFactory
 import com.example.client.data.model.viewmodel.JobPostLicenseViewModel
@@ -22,6 +23,8 @@ import com.example.client.data.model.viewmodel.MyPageViewModel
 import com.example.client.data.model.viewmodel.MyPageViewModelFactory
 import com.example.client.data.model.viewmodel.mypage.EditInterestedViewModel
 import com.example.client.data.model.viewmodel.mypage.EditInterestedViewModelFactory
+import com.example.client.data.model.viewmodel.mypage.EditLicenseViewModel
+import com.example.client.data.model.viewmodel.mypage.EditLicenseViewModelFactory
 import com.example.client.data.model.viewmodel.mypage.EditProfileViewModel
 import com.example.client.data.model.viewmodel.mypage.EditProfileViewModelFactory
 import com.example.client.data.model.viewmodel.mypage.EditRegionViewModel
@@ -30,6 +33,7 @@ import com.example.client.data.repository.JobPostLicenseRepository
 import com.example.client.data.repository.JobPostRepository
 import com.example.client.data.repository.MyPageRepository
 import com.example.client.data.repository.mypage.EditInterestedRepository
+import com.example.client.data.repository.mypage.EditLicenseRepository
 import com.example.client.data.repository.mypage.EditProfileRepository
 import com.example.client.data.repository.mypage.EditRegionRepository
 
@@ -50,6 +54,7 @@ class MainActivity : ComponentActivity() {
             editInterestedRepository = EditInterestedRepository(apiService),
             editRegionRepository = EditRegionRepository(apiService),
             editProfileRepository = EditProfileRepository(apiService),
+            editLicenseRepository = EditLicenseRepository(apiService)
             // 필요한 다른 repository 추가
         )
 
@@ -86,6 +91,10 @@ class MainActivity : ComponentActivity() {
             editProfileViewModel = ViewModelProvider(this,
                 EditProfileViewModelFactory(repositories.editProfileRepository)
             ).get(EditProfileViewModel::class.java),
+            editLicenseViewModel = ViewModelProvider(this,
+                EditLicenseViewModelFactory(repositories.editLicenseRepository)
+            ).get(EditLicenseViewModel::class.java)
+
             // 필요한 다른 viewModel 추가
         )
 
@@ -104,7 +113,8 @@ data class AppRepositories(
     val myPageRepository: MyPageRepository,
     val editInterestedRepository: EditInterestedRepository,
     val editRegionRepository: EditRegionRepository,
-    val editProfileRepository: EditProfileRepository
+    val editProfileRepository: EditProfileRepository,
+    val editLicenseRepository: EditLicenseRepository
     // 필요한 다른 repository 추가
 )
 
@@ -119,5 +129,6 @@ data class AppViewModels(
     val editInterestedViewModel: EditInterestedViewModel,
     val editRegionViewModel: EditRegionViewModel,
     val editProfileViewModel: EditProfileViewModel,
+    val editLicenseViewModel: EditLicenseViewModel
     // 필요한 다른 viewModel 추가
 )

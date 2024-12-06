@@ -5,6 +5,7 @@ import com.example.client.data.model.request.KakaoLoginRequest
 import com.example.client.data.model.request.MainOnBoardingRequest
 import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.request.mypage.EditInterestedRequest
+import com.example.client.data.model.request.mypage.EditLicenseRequest
 import com.example.client.data.model.request.mypage.EditProfileRequest
 import com.example.client.data.model.request.mypage.EditRegionRequest
 import com.example.client.data.model.response.JobPostResponse
@@ -56,7 +57,8 @@ interface ApiService {
     @PATCH("users/mypage/interests") //관심분야 수정
     suspend fun setUserInterests(@Body request: EditInterestedRequest): Response<Void>
 
-    //자격증 수정 추가
+    @PATCH("users/mypage/licenses") //자격증 수정
+    suspend fun setUserLicenses(@Body request: EditLicenseRequest): Response<Void>
 
     /** 커뮤니티 */
     @GET("community/posts") //커뮤니티 더미데이터 불러오기
