@@ -16,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     /** 카카오 로그인 */
@@ -34,7 +35,10 @@ interface ApiService {
     suspend fun getJob(): Response<List<JobPostResponse>>
 
     @GET("jobs/posts/search")
-    suspend fun searchJob(): Response<Void>
+    suspend fun searchJob(
+        @Query("keyword")
+        keyword:String
+    ): Response<List<JobPostResponse>>
 
     @GET("jobs/posts/licenses") //사용자가 클릭한 자격증 이름으로 request
     suspend fun getJobLicenses(): Response<Void>

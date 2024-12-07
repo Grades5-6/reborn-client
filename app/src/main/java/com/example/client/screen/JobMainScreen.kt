@@ -145,9 +145,10 @@ fun JobMainScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_send),
                         contentDescription = null,
+                        tint = ButtonColorEnum.Green.color,
                         modifier = Modifier
                             .clickable {
-                                // 서버 통신 하쟝
+                                jobPostViewModel.searchJob(searchKeyword)
                             }
                             .padding(start = 8.dp)
                             .align(Alignment.CenterVertically),
