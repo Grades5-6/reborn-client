@@ -56,7 +56,6 @@ fun NavigationHost(
 
         composable(NavRoutes.MyPage.route) {
             MyPageScreen(
-                sharedCertificationViewModel = viewModels.sharedCertificationViewModel,
                 myPageViewModel = viewModels.myPageViewModel,
                 navController = navController)
         }

@@ -1,5 +1,8 @@
 package com.example.client.data.model.viewmodel.mypage
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.client.data.model.response.LicensesGetResponse
@@ -48,7 +51,7 @@ class EditLicenseViewModel(private val repository: EditLicenseRepository) : View
                         LicensesGetResponse(
                             jmfldnm = license.jmfldnm,
                             seriesnm = license.seriesnm,
-                            expirationDate = license.expirationDate
+                            expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
                         )
                     })
                 } else {

@@ -29,15 +29,17 @@ import com.example.client.domain.TestUserInfo
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    NavigationBar(
-        modifier = Modifier
-            .background(color = Color.White),
-        contentColor = colorResource(id = android.R.color.white),
-        containerColor = colorResource(id = android.R.color.white),
-    ) {
-        val backStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = backStackEntry?.destination?.route
-        if(!(currentRoute.equals("Login") || currentRoute.equals("MainOnboarding")|| currentRoute.equals("JobOnboarding"))){
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+    val routesWithoutBottomBar = listOf("Login", "MainOnboarding", "JobOnboarding")
+
+    if (!routesWithoutBottomBar.contains(currentRoute)) {
+        NavigationBar(
+            modifier = Modifier
+                .background(color = Color.White),
+            contentColor = colorResource(id = android.R.color.white),
+            containerColor = colorResource(id = android.R.color.white),
+        ) {
             NavBarItems.BarItems.forEach { navItem ->
                 NavigationBarItem(
                     modifier = Modifier.background(color = Color.White),
