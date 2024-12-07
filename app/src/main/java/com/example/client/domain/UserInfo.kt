@@ -1,6 +1,5 @@
 package com.example.client.domain
 
-import com.example.client.data.model.response.LicenseResponse
 import com.example.client.data.model.response.LicensesGetResponse
 
 object TestUserInfo {

@@ -3,6 +3,7 @@ package com.example.client.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -124,15 +126,17 @@ fun MainScreen(navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(343.dp)
+                .height(363.dp)
                 .padding(top = 25.dp)
-                .background(color = Color(0xFFFFFEF4), shape = RoundedCornerShape(size = 40.dp))
+                .background(color = Color(0xFFFFFEF4), shape = RoundedCornerShape(size = 40.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Image(
                 painter = painterResource(id = R.drawable.btn_community),
                 contentDescription = "Btn_community",
                 modifier = Modifier
-                    .padding(top=20.dp, start = 10.dp)
+                    .size(width = 200.dp, height = 247.dp)
                     .clickable {
                         navController.navigate("Community")
                     }
@@ -142,7 +146,8 @@ fun MainScreen(navController: NavController) {
                     painter = painterResource(id = R.drawable.btn_job),
                     contentDescription = "Btn_job",
                     modifier = Modifier
-                        .padding(top = 20.dp, start = 5.dp)
+                        .padding(start = 5.dp, bottom = 10.dp)
+                        .size(width = 156.dp, height = 117.dp)
                         .clickable {
                             if(TestUserInfo.SEX.isNullOrEmpty() || TestUserInfo.YEAR == null){
                                 navController.navigate("JobOnboarding")
@@ -159,7 +164,7 @@ fun MainScreen(navController: NavController) {
                         .clickable {
                             navController.navigate("MyPage")
                         }
-                        .size(width = 160.dp, height = 140.dp)
+                        .size(width = 156.dp, height = 117.dp)
                         .fillMaxWidth()
                 )
             }

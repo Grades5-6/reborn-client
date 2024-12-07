@@ -39,6 +39,8 @@ import com.example.client.component.all.CertificateComponent
 import com.example.client.data.model.viewmodel.SharedCertificationViewModel
 import com.example.client.data.model.viewmodel.mypage.EditLicenseViewModel
 import com.example.client.domain.TestUserInfo
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun EditLicenseScreen(
@@ -140,7 +142,7 @@ fun EditLicenseScreen(
                                         CertificateComponent(
                                             type = license.seriesnm,
                                             name = license.jmfldnm,
-                                            date = license.expirationDate ?: "2024-12-05",
+                                            date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
                                             isSelected = isSelected,
                                             onItemSelected = { selectedLicense ->
                                                 editLicenseViewModel.toggleLicencesSelection(selectedLicense)

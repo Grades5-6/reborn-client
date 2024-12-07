@@ -48,16 +48,17 @@ import com.example.client.component.all.ButtonComponent
 import com.example.client.component.mypage.CertificateItemComponent
 import com.example.client.component.mypage.JobFieldViewComponent
 import com.example.client.component.mypage.RebornTemperatureComponent
+import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.viewmodel.SharedCertificationViewModel
-import com.example.client.data.model.response.LicenseResponse
 import com.example.client.data.model.viewmodel.MyPageViewModel
 import com.example.client.domain.TestUserInfo
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 @Composable
 fun MyPageScreen(
     myPageViewModel: MyPageViewModel,
-    sharedCertificationViewModel: SharedCertificationViewModel,
     navController: NavController
 ) {
     var nickname by remember { mutableStateOf<String?>(null) }
@@ -272,11 +273,11 @@ fun MyPageScreen(
 
                 user?.licenses?.forEach { license ->
                     CertificateItemComponent(
-                        license = LicenseResponse(
+                        license = LicensesGetResponse(
                             jmfldnm = license.jmfldnm,
                             seriesnm = license.seriesnm,
                             //todo: 자격증 Date 추가
-                            date = Date()
+                            expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
                         )
                     )
                     Spacer(modifier = Modifier.height(8.dp))

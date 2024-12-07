@@ -7,5 +7,5 @@ data class MyPageResponse(
     val employmentStatus: String,
     val region: String,
     val interestedField: List<String>,
-    val licenses: List<LicenseResponse>
+    val licenses: List<LicensesGetResponse>
 )

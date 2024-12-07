@@ -20,10 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.client.R
-import com.example.client.data.model.response.LicenseResponse
+import com.example.client.data.model.response.LicensesGetResponse
 
 @Composable
-fun CertificateItemComponent(license: LicenseResponse) {
+fun CertificateItemComponent(license: LicensesGetResponse) {
 
     ListItem(
         modifier = Modifier.fillMaxWidth()
@@ -63,7 +63,7 @@ fun CertificateItemComponent(license: LicenseResponse) {
                 contentAlignment = Alignment.Center // 중앙 정렬
             ) {
                 Text(
-                    text = license.date.toString(),
+                    text = license.expirationDate.toString(),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.pretendardregular)),
