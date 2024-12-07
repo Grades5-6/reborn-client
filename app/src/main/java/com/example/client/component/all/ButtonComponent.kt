@@ -36,7 +36,7 @@ fun ButtonComponent(
         modifier = Modifier
             .then(modifier)
             .height(50.dp)
-            .width(288.dp)
+            .width(297.dp)
             .padding(4.dp)
     ) {
         Text(
