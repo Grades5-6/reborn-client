@@ -47,6 +47,7 @@ import com.example.client.component.all.ButtonComponent
 import com.example.client.component.all.CertificateComponent
 import com.example.client.component.all.DropDownMenuComponent
 import com.example.client.component.onboarding.PageIndexComponent
+import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.viewmodel.JobOnBoardingViewModel
 import com.example.client.data.model.viewmodel.SharedCertificationViewModel
 import com.example.client.domain.TestUserInfo
@@ -451,9 +452,7 @@ fun JobOnBoardingScreen(
                                 buttonText = if (selectedLicensesCount == 0) "추가하기" else "${selectedLicensesCount}개 추가완료하기",
                                 buttonColorType = if (selectedLicensesCount == 0) ButtonColorEnum.LightGreen else ButtonColorEnum.Green,
                                 onClick = {
-                                    if (selectedLicensesCount != 0) {
-                                        currentQuestionIndex++
-                                    }
+                                    currentQuestionIndex++
                                 },
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
@@ -524,11 +523,19 @@ fun JobOnBoardingScreen(
                         onClick = {
                             val sex = selectGender
                             val year = selectBirth?.toInt()
+                            println(sex + ":" + year.toString())
                             if (sex != null && year != null) {
                                 viewModel.submitJobOnboarding(sex, year)
-                                TestUserInfo.sex=sex
-                                TestUserInfo.year=year
-                                TestUserInfo.licenses=selectedLicenses.map { it.jmfldnm }
+                                TestUserInfo.SEX=sex
+                                TestUserInfo.YEAR=year
+                                TestUserInfo.LICENSES.clear()
+                                TestUserInfo.LICENSES.addAll(selectedLicenses.map { license ->
+                                    LicensesGetResponse(
+                                        jmfldnm = license.jmfldnm,
+                                        seriesnm = license.seriesnm,
+                                        expirationDate = license.expirationDate
+                                    )
+                                })
                                 navController.navigate(NavRoutes.JobMain.route) {
                                     popUpTo(NavRoutes.JobOnboarding.route) { inclusive = true }
                                 }

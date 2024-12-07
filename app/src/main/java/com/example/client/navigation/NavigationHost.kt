@@ -12,6 +12,7 @@ import com.example.client.screen.MainScreen
 import com.example.client.screen.MainOnboardingScreen
 import com.example.client.screen.MyPageScreen
 import com.example.client.screen.mypage.EditInterestedFieldScreen
+import com.example.client.screen.mypage.EditLicenseScreen
 import com.example.client.screen.mypage.EditProfileScreen
 import com.example.client.screen.mypage.EditRegionScreen
 
@@ -47,6 +48,7 @@ fun NavigationHost(
         composable(NavRoutes.JobMain.route) {
             JobMainScreen(
                 jobPostViewModel = viewModels.jobPostViewModel,
+                jobPostLicenseViewModel = viewModels.jobPostLicenseViewModel,
                 navController = navController
             )
         }
@@ -87,5 +89,12 @@ fun NavigationHost(
             )
         }
 
+        composable(NavRoutes.MyPageLicense.route) {
+            EditLicenseScreen(
+                sharedViewModel = viewModels.sharedCertificationViewModel,
+                editLicenseViewModel = viewModels.editLicenseViewModel,
+                navController = navController
+            )
+        }
     }
 }

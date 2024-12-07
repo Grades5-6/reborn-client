@@ -253,6 +253,9 @@ fun MyPageScreen(
                     painter = painterResource(id = R.drawable.rounded_edit_square_24),
                     contentDescription = null,
                     modifier = Modifier.padding(top = 20.dp, start = 300.dp)
+                        .clickable {
+                            navController.navigate("MyPageLicense")
+                        }
                 )
                 Text(
                     text = "나의 자격증",

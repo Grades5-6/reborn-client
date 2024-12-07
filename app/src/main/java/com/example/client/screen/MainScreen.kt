@@ -105,13 +105,13 @@ fun MainScreen(navController: NavController) {
                         .height(100.dp)
                         .clip(CircleShape)
                         .clickable { navController.navigate("MyPage") },
-                    error = painterResource(id = R.drawable.btn_editprofile),
-                    placeholder = painterResource(id = R.drawable.btn_editprofile)
+                    error = painterResource(id = R.drawable.icon_rebornlogo),
+                    placeholder = painterResource(id = R.drawable.icon_rebornlogo)
                 )
             } else {
                 Image(
                     painter = painterResource(id = R.drawable.icon_rebornlogo),
-                    contentDescription = "Btn_editprofile",
+                    contentDescription = "기본 이미지",
                     modifier = Modifier
                         .width(129.dp)
                         .height(83.dp)
@@ -144,7 +144,7 @@ fun MainScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(top = 20.dp, start = 5.dp)
                         .clickable {
-                            if (TestUserInfo.sex.isNullOrEmpty()) {
+                            if(TestUserInfo.SEX.isNullOrEmpty() || TestUserInfo.YEAR == null){
                                 navController.navigate("JobOnboarding")
                             } else {
                                 navController.navigate("JobMain")

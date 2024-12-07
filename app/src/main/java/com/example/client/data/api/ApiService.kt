@@ -5,6 +5,7 @@ import com.example.client.data.model.request.KakaoLoginRequest
 import com.example.client.data.model.request.MainOnBoardingRequest
 import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.request.mypage.EditInterestedRequest
+import com.example.client.data.model.request.mypage.EditLicenseRequest
 import com.example.client.data.model.request.mypage.EditProfileRequest
 import com.example.client.data.model.request.mypage.EditRegionRequest
 import com.example.client.data.model.response.JobPostResponse
@@ -15,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     /** 카카오 로그인 */
@@ -36,7 +38,7 @@ interface ApiService {
     suspend fun searchJob(): Response<Void>
 
     @GET("jobs/posts/licenses") //사용자가 클릭한 자격증 이름으로 request
-    suspend fun getJobLicenses(): Response<Void>
+    suspend fun getJobLicense(@Query("jmfldnm") jmfldnm: String): Response<List<JobPostResponse>>
 
     /** 자격증 리스트 소환 */
     @GET("licenses")
@@ -55,7 +57,8 @@ interface ApiService {
     @PATCH("users/mypage/interests") //관심분야 수정
     suspend fun setUserInterests(@Body request: EditInterestedRequest): Response<Void>
 
-    //자격증 수정 추가
+    @PATCH("users/mypage/licenses") //자격증 수정
+    suspend fun setUserLicenses(@Body request: EditLicenseRequest): Response<Void>
 
     /** 커뮤니티 */
     @GET("community/posts") //커뮤니티 더미데이터 불러오기
