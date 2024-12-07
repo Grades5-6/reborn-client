@@ -52,6 +52,8 @@ import com.example.client.data.model.viewmodel.JobOnBoardingViewModel
 import com.example.client.data.model.viewmodel.SharedCertificationViewModel
 import com.example.client.domain.TestUserInfo
 import com.example.client.navigation.NavRoutes
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun JobOnBoardingScreen(
@@ -59,6 +61,7 @@ fun JobOnBoardingScreen(
     viewModel: JobOnBoardingViewModel,
     navController: NavController
 ) {
+
     val nickname = TestUserInfo.TEST_USERNAME
     var currentQuestionIndex by remember { mutableIntStateOf(0) }
     var selectGender by remember { mutableStateOf<String?>(null) }
@@ -423,7 +426,7 @@ fun JobOnBoardingScreen(
                                             CertificateComponent(
                                                 type = license.seriesnm,
                                                 name = license.jmfldnm,
-                                                date = license.expirationDate ?: "2024-12-05",
+                                                date = LocalDate.now().format(DateTimeFormatter.ISO_DATE),
                                                 isSelected = isSelected,
                                                 onItemSelected = { selectedLicense ->
                                                     viewModel.toggleLicencesSelection(
@@ -533,7 +536,7 @@ fun JobOnBoardingScreen(
                                     LicensesGetResponse(
                                         jmfldnm = license.jmfldnm,
                                         seriesnm = license.seriesnm,
-                                        expirationDate = license.expirationDate
+                                        expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
                                     )
                                 })
                                 navController.navigate(NavRoutes.JobMain.route) {
