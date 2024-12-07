@@ -1,5 +1,8 @@
 package com.example.client.domain
 
+import com.example.client.data.model.response.LicenseResponse
+import com.example.client.data.model.response.LicensesGetResponse
+
 object TestUserInfo {
     var TEST_USERNAME = "김영숙"
     const val TEST_PASSWORD = "admin"
@@ -8,9 +11,9 @@ object TestUserInfo {
     var REGION = ""
     var REBORNTEMPERATURE = 0
     var EMPLOYMENT = ""
-    var sex:String?=null
-    var year:Int?=null
-    var licenses:List<String> = emptyList()
+    var SEX:String?=null
+    var YEAR:Int?=null
+    var LICENSES:MutableList<LicensesGetResponse> = mutableListOf()
 }
 
 //object UserInfo {

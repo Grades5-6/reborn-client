@@ -9,6 +9,7 @@ sealed class NavRoutes(val route: String) {
     object MyPageInterest : NavRoutes("MyPageInterest")
     object MyPageRegion : NavRoutes("MyPageRegion")
     object MyPageProfile : NavRoutes("MyPageProfile")
+    object MyPageLicense : NavRoutes("MyPageLicense")
     object JobOnboarding : NavRoutes("JobOnboarding")
     object Community : NavRoutes("Community")
 }

@@ -63,11 +63,16 @@ import com.example.client.component.all.TabLayoutComponent
 import com.example.client.data.model.viewmodel.JobPostViewModel
 import com.example.client.domain.TestUserInfo
 import androidx.compose.ui.platform.LocalContext
-import com.example.client.component.all.ButtonColorEnum
+import com.example.client.component.mypage.CertificateItemComponent
+import com.example.client.data.model.response.LicenseResponse
+import com.example.client.data.model.response.LicensesGetResponse
+import com.example.client.data.model.viewmodel.JobPostLicenseViewModel
+import java.util.Date
 
 @Composable
 fun JobMainScreen(
     jobPostViewModel: JobPostViewModel,
+    jobPostLicenseViewModel: JobPostLicenseViewModel,
     navController: NavController
 ) {
     // Context를 상위 레벨에서 가져옴
@@ -230,6 +235,11 @@ fun JobMainScreen(
                                             buttonText = TestUserInfo.REGION,
                                             onClick = {}
                                         )
+                                        Spacer(modifier = Modifier.size(10.dp))
+                                        KeywordButtonComponent(
+                                            buttonText = "${TestUserInfo.YEAR} / ${TestUserInfo.SEX}",
+                                            onClick = {}
+                                        )
                                     }
                                     items(TestUserInfo.INTEREST) { interest ->
                                         Spacer(modifier = Modifier.size(10.dp))
@@ -305,48 +315,131 @@ fun JobMainScreen(
                         }
 
                         1 -> {
+                            var isLicenseView by remember { mutableStateOf(true) }
+                            val isLoading by jobPostLicenseViewModel.isLoading.collectAsState()
+                            val error by jobPostLicenseViewModel.error.collectAsState()
+                            val jobs by jobPostLicenseViewModel.jobList.collectAsState()
+
+                            // 디버깅을 위한 로그 추가
+                            LaunchedEffect(jobs) {
+                                Log.d("JobMainScreen", "Jobs updated: ${jobs.size}")
+                            }
+
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .heightIn(min = 800.dp)
                                     .padding(top = 25.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(
-                                    text = "확인하고 싶은 자격증을 선택해주세요!",
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        lineHeight = 40.sp,
-                                        fontFamily = FontFamily(Font(R.font.pretendardextrabold)),
-                                        fontWeight = FontWeight(600),
-                                        color = Color(0xFF000000),
-                                        textAlign = TextAlign.Center,
-                                    )
-                                )
-                                Spacer(modifier = Modifier.size(15.dp))
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(1000.dp)
-                                        .padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    val certList = listOf(
-                                        Triple("한국고용정보원", "고용서비스", "25.07.15"),
-                                        Triple("한국산업인력공단", "지게차운전", "25.08.20"),
-                                        Triple("대한상공회의소", "컴퓨터활용능력", "25.09.10"),
-                                        Triple("한국고용정보원", "직업상담사", "25.10.15")
-                                        // ... 더 많은 데이터
-                                    )
-
-                                    items(certList) { (dept, name, date) ->
-                                        CertificateButtonComponent(
-                                            certificateDepartment = dept,
-                                            certificateName = name,
-                                            date = date,
-                                            onClick = { /* 자격증 상세 정보로 이동 */ }
+                                if (isLicenseView) {
+                                    Text(
+                                        text = "확인하고 싶은 자격증을 선택해주세요!",
+                                        style = TextStyle(
+                                            fontSize = 20.sp,
+                                            lineHeight = 40.sp,
+                                            fontFamily = FontFamily(Font(R.font.pretendardextrabold)),
+                                            fontWeight = FontWeight(600),
+                                            color = Color(0xFF000000),
+                                            textAlign = TextAlign.Center,
                                         )
+                                    )
+                                    Spacer(modifier = Modifier.size(15.dp))
+                                    LazyVerticalGrid(
+                                        columns = GridCells.Fixed(2),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1000.dp)
+                                            .padding(horizontal = 8.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        items(TestUserInfo.LICENSES) { license ->
+                                            CertificateButtonComponent(
+                                                license = LicensesGetResponse(
+                                                    jmfldnm = license.jmfldnm,
+                                                    seriesnm = license.seriesnm,
+                                                    expirationDate = license.expirationDate
+                                                ),
+                                                onClick = {
+                                                    jobPostLicenseViewModel.getJobLicense(license.jmfldnm)
+                                                    isLicenseView = false
+                                                }
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        TextButton(
+                                            onClick = { isLicenseView = true },
+                                            modifier = Modifier.padding(bottom = 8.dp)
+                                        ) {
+                                            Text(
+                                                text = "자격증 목록으로 돌아가기",
+                                                style = TextStyle(
+                                                    fontSize = 20.sp,
+                                                    fontFamily = FontFamily(Font(R.font.pretendardregular)),
+                                                    fontWeight = FontWeight(600),
+                                                    color = Color(0xFF688142),
+                                                )
+                                            )
+                                        }
+
+                                        when {
+                                            isLoading -> {
+                                                CircularProgressIndicator(
+                                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                                    color = Color(0xFF48582F)
+                                                )
+                                            }
+                                            error != null -> {
+                                                Text(
+                                                    text = error ?: "오류가 발생했습니다",
+                                                    modifier = Modifier
+                                                        .align(Alignment.CenterHorizontally)
+                                                        .padding(16.dp),
+                                                    color = Color.Red
+                                                )
+                                            }
+                                            jobs.isEmpty() -> {
+                                                Text(
+                                                    text = "해당 자격증과 관련된 일자리가 없습니다",
+                                                    modifier = Modifier
+                                                        .align(Alignment.CenterHorizontally)
+                                                        .padding(16.dp),
+                                                    style = TextStyle(
+                                                        fontSize = 16.sp,
+                                                        fontFamily = FontFamily(Font(R.font.pretendardregular))
+                                                    )
+                                                )
+                                            }
+                                            else -> {
+                                                jobs.forEach { job ->
+                                                    // 디버깅을 위한 로그 추가
+                                                    Log.d("JobMainScreen", "Rendering job: ${job.companyName}")
+                                                    JobListComponent(
+                                                        companyName = job.companyName ?: "회사명 없음",
+                                                        jobTitle = job.jobTitle ?: "제목 없음",
+                                                        location = job.workAddr ?: "주소 없음",
+                                                        onClick = {
+                                                            if (job.hmUrl != null) {
+                                                                if (!job.hmUrl.startsWith("https://")) {
+                                                                    job.hmUrl = "https://${job.hmUrl}"
+                                                                }
+                                                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(job.hmUrl))
+                                                                context.startActivity(intent)
+                                                            } else {
+                                                                Toast.makeText(context, "일자리 상세 페이지가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                                                            }
+                                                        }
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -356,5 +449,6 @@ fun JobMainScreen(
                 Spacer(modifier = Modifier.size(70.dp))
             }
         }
+
     }
 }
