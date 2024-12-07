@@ -3,6 +3,7 @@ package com.example.client.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -138,7 +140,10 @@ fun JobOnBoardingScreen(
                     Spacer(Modifier.height(90.dp))
                     Row(
                         modifier = Modifier
-                            .padding(horizontal = 50.dp)
+                            .padding(horizontal = 60.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -147,21 +152,21 @@ fun JobOnBoardingScreen(
                                     selectGender = "여성"
                                 }
                         ) {
-                            val imageSize =
-                                if (selectGender == "여성") 100.dp else if (selectGender == null) 100.dp else 90.dp
-                            val textSize =
-                                if (selectGender == "여성") 17.sp else if (selectGender == null) 17.sp else 14.sp
-                            Image(
+                            val womanTint =
+                                if (selectGender == "여성") ButtonColorEnum.Green.color else if (selectGender == null) Color.Black else ButtonColorEnum.Gray.color
+                            Icon(
                                 painter = painterResource(R.drawable.ic_woman),
                                 contentDescription = null,
-                                modifier = Modifier.size(imageSize)
+                                modifier = Modifier.size(100.dp),
+                                tint = womanTint
                             )
                             Text(
                                 text = "여성",
                                 textAlign = TextAlign.Center,
-                                fontSize = textSize,
+                                fontSize = 17.sp,
                                 fontFamily = FontFamily(Font(R.font.pretendardextrabold)),
-                                modifier = Modifier.padding(top = 8.dp)
+                                modifier = Modifier.padding(top = 8.dp),
+                                color = womanTint
                             )
                         }
                         Spacer(Modifier.width(80.dp))
@@ -172,23 +177,22 @@ fun JobOnBoardingScreen(
                                     selectGender = "남성"
                                 }
                         ) {
-                            val imageSize =
-                                if (selectGender == "남성") 100.dp else if (selectGender == null) 100.dp else 90.dp
-                            val textSize =
-                                if (selectGender == "남성") 17.sp else if (selectGender == null) 17.sp else 14.sp
-
-                            Image(
+                            val manTint =
+                                if (selectGender == "남성") ButtonColorEnum.Green.color else if (selectGender == null) Color.Black else ButtonColorEnum.Gray.color
+                            Icon(
                                 painter = painterResource(R.drawable.ic_man),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(imageSize)
+                                    .size(100.dp),
+                                tint = manTint
                             )
                             Text(
                                 text = "남성",
                                 textAlign = TextAlign.Center,
-                                fontSize = textSize,
+                                fontSize = 17.sp,
                                 fontFamily = FontFamily(Font(R.font.pretendardextrabold)),
-                                modifier = Modifier.padding(top = 8.dp)
+                                modifier = Modifier.padding(top = 8.dp),
+                                color = manTint
                             )
                         }
                     }
