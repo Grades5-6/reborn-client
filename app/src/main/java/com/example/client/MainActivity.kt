@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.example.client.data.api.RetrofitClient
+import com.example.client.data.model.viewmodel.CommunityViewModel
+import com.example.client.data.model.viewmodel.CommunityViewModelFactory
 import com.example.client.data.model.request.mypage.EditLicenseRequest
 import com.example.client.data.model.viewmodel.JobOnBoardingViewModel
 import com.example.client.data.model.viewmodel.JobOnBoardingViewModelFactory
@@ -29,6 +31,7 @@ import com.example.client.data.model.viewmodel.mypage.EditProfileViewModel
 import com.example.client.data.model.viewmodel.mypage.EditProfileViewModelFactory
 import com.example.client.data.model.viewmodel.mypage.EditRegionViewModel
 import com.example.client.data.model.viewmodel.mypage.EditRegionViewModelFactory
+import com.example.client.data.repository.CommunityRepository
 import com.example.client.data.repository.JobPostLicenseRepository
 import com.example.client.data.repository.JobPostRepository
 import com.example.client.data.repository.MyPageRepository
@@ -54,7 +57,8 @@ class MainActivity : ComponentActivity() {
             editInterestedRepository = EditInterestedRepository(apiService),
             editRegionRepository = EditRegionRepository(apiService),
             editProfileRepository = EditProfileRepository(apiService),
-            editLicenseRepository = EditLicenseRepository(apiService)
+            editLicenseRepository = EditLicenseRepository(apiService),
+            communityRepository = CommunityRepository(apiService),
             // 필요한 다른 repository 추가
         )
 
@@ -91,6 +95,8 @@ class MainActivity : ComponentActivity() {
             editProfileViewModel = ViewModelProvider(this,
                 EditProfileViewModelFactory(repositories.editProfileRepository)
             ).get(EditProfileViewModel::class.java),
+            communityViewModel = ViewModelProvider(this, CommunityViewModelFactory
+                (repositories.communityRepository)).get(CommunityViewModel::class.java),
             editLicenseViewModel = ViewModelProvider(this,
                 EditLicenseViewModelFactory(repositories.editLicenseRepository)
             ).get(EditLicenseViewModel::class.java)
@@ -114,6 +120,7 @@ data class AppRepositories(
     val editInterestedRepository: EditInterestedRepository,
     val editRegionRepository: EditRegionRepository,
     val editProfileRepository: EditProfileRepository,
+    val communityRepository: CommunityRepository,
     val editLicenseRepository: EditLicenseRepository
     // 필요한 다른 repository 추가
 )
@@ -129,6 +136,7 @@ data class AppViewModels(
     val editInterestedViewModel: EditInterestedViewModel,
     val editRegionViewModel: EditRegionViewModel,
     val editProfileViewModel: EditProfileViewModel,
-    val editLicenseViewModel: EditLicenseViewModel
+    val editLicenseViewModel: EditLicenseViewModel,
+    val communityViewModel: CommunityViewModel,
     // 필요한 다른 viewModel 추가
 )

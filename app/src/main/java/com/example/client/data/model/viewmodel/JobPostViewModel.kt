@@ -1,7 +1,9 @@
 package com.example.client.data.model.viewmodel
 
+import androidx.compose.runtime.key
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.client.data.model.response.JobPostResponse
 import com.example.client.data.repository.JobPostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +28,30 @@ class JobPostViewModel(private val repository: JobPostRepository) : ViewModel() 
             
             try {
                 val response: Response<List<JobPostResponse>> = repository.getJobList()
+                if (response.isSuccessful) {
+                    _jobList.value = response.body() ?: emptyList()
+                    println("Job list fetched successfully!")
+                    println(_jobList.value)
+                } else {
+                    _error.value = "Failed to fetch jobs: ${response.code()}"
+                    println("Failed to fetch job list: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                _error.value = e.message ?: "An unknown error occurred"
+                println("Error fetching job list: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun searchJob(keyword:String){
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
+
+            try {
+                val response: Response<List<JobPostResponse>> = repository.searchJob( keyword = keyword)
                 if (response.isSuccessful) {
                     _jobList.value = response.body() ?: emptyList()
                     println("Job list fetched successfully!")

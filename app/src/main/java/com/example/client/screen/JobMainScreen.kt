@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -26,10 +27,14 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -57,6 +63,7 @@ import com.example.client.component.all.TabLayoutComponent
 import com.example.client.data.model.viewmodel.JobPostViewModel
 import com.example.client.domain.TestUserInfo
 import androidx.compose.ui.platform.LocalContext
+import com.example.client.component.all.ButtonColorEnum
 import com.example.client.component.mypage.CertificateItemComponent
 import com.example.client.data.model.response.LicenseResponse
 import com.example.client.data.model.response.LicensesGetResponse
@@ -71,9 +78,11 @@ fun JobMainScreen(
 ) {
     // Context를 상위 레벨에서 가져옴
     val context = LocalContext.current
-    
+
     var nickname by remember { mutableStateOf<String?>(null) }
-    
+    val showSearchBar = remember { mutableStateOf(false) }
+    var searchKeyword by remember { mutableStateOf("") }
+
     // 상태 수집
     val jobList by jobPostViewModel.jobList.collectAsState()
     val isLoading by jobPostViewModel.isLoading.collectAsState()
@@ -84,35 +93,77 @@ fun JobMainScreen(
         jobPostViewModel.getJob()
     }
 
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFFFBDC))
     ) {
-       item {
-           Row(
-               modifier = Modifier.padding(start = 15.dp, top = 40.dp)
-           ) {
-               Image(
-                   painter = painterResource(id = R.drawable.icon_rebornlogo),
-                   contentDescription = "Icon_rebornlogo",
-                   modifier = Modifier
-                       .width(80.dp)
-                       .height(66.dp)
-               )
-               Icon(
-                   painter = painterResource(id = R.drawable.baseline_search_24),
-                   contentDescription = null,
-                   modifier = Modifier
-                       .padding(start = 230.dp)
-                       .clickable {  }
-                       .padding(8.dp),
-                   tint = Color(0xFF48582F)
-               )
-           }
-       }
+        item {
+            Row(
+                modifier = Modifier.padding(start = 15.dp, top = 40.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_rebornlogo),
+                    contentDescription = "Icon_rebornlogo",
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(66.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_search_24),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 230.dp)
+                        .clickable {
+                            showSearchBar.value = !showSearchBar.value
+                            Log.e("showSearchBar", "${showSearchBar.value}")
+                        }
+                        .padding(8.dp),
+                    tint = Color(0xFF48582F)
+                )
+            }
+        }
 
-        item{
+        if (showSearchBar.value) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .background(color = ButtonColorEnum.Gray.color.copy(alpha = 0.3f))
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    TextField(
+                        value = searchKeyword,
+                        onValueChange = { searchKeyword = it },
+                        modifier = Modifier.weight(1f),
+                        label = { Text("가장 하고 싶은 일이 무엇인가요?") },
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                        )
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_send),
+                        contentDescription = null,
+                        tint = ButtonColorEnum.Green.color,
+                        modifier = Modifier
+                            .clickable {
+                                jobPostViewModel.searchJob(searchKeyword)
+                            }
+                            .padding(start = 8.dp)
+                            .align(Alignment.CenterVertically),
+                    )
+                }
+            }
+        }
+
+        item {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -137,7 +188,7 @@ fun JobMainScreen(
                             )
                             Spacer(modifier = Modifier.width(120.dp))
                             TextButton(
-                                onClick = { navController.navigate("MyPage")},
+                                onClick = { navController.navigate("MyPage") },
                                 enabled = true,
                             ) {
                                 Text(
@@ -208,6 +259,7 @@ fun JobMainScreen(
                                             color = Color(0xFF48582F)
                                         )
                                     }
+
                                     error != null -> {
                                         Text(
                                             text = "데이터를 불러오는데 실패했습니다",
@@ -215,12 +267,14 @@ fun JobMainScreen(
                                             modifier = Modifier.padding(16.dp)
                                         )
                                     }
+
                                     jobList.isEmpty() -> {
                                         Text(
                                             text = "표시할 일자리가 없습니다",
                                             modifier = Modifier.padding(16.dp)
                                         )
                                     }
+
                                     else -> {
                                         Column(
                                             modifier = Modifier
@@ -238,11 +292,18 @@ fun JobMainScreen(
                                                             if (!job.hmUrl.startsWith("https://")) {
                                                                 job.hmUrl = "https://${job.hmUrl}"
                                                             }
-                                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(job.hmUrl))
+                                                            val intent = Intent(
+                                                                Intent.ACTION_VIEW,
+                                                                Uri.parse(job.hmUrl)
+                                                            )
                                                             context.startActivity(intent)
                                                         } else {
                                                             // URL이 없는 경우 알림창 표시
-                                                            Toast.makeText(context, "일자리 상세 페이지가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                                                            Toast.makeText(
+                                                                context,
+                                                                "일자리 상세 페이지가 존재하지 않습니다.",
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
                                                         }
                                                     }
                                                 )
@@ -253,6 +314,7 @@ fun JobMainScreen(
                                 }
                             }
                         }
+
                         1 -> {
                             var isLicenseView by remember { mutableStateOf(true) }
                             val isLoading by jobPostLicenseViewModel.isLoading.collectAsState()
@@ -327,7 +389,7 @@ fun JobMainScreen(
                                                 )
                                             )
                                         }
-                                        
+
                                         when {
                                             isLoading -> {
                                                 CircularProgressIndicator(

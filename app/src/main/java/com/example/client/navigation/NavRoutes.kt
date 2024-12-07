@@ -11,4 +11,5 @@ sealed class NavRoutes(val route: String) {
     object MyPageProfile : NavRoutes("MyPageProfile")
     object MyPageLicense : NavRoutes("MyPageLicense")
     object JobOnboarding : NavRoutes("JobOnboarding")
+    object Community : NavRoutes("Community")
 }

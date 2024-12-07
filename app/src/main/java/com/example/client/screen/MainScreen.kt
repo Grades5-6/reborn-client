@@ -134,7 +134,7 @@ fun MainScreen(navController: NavController) {
                 modifier = Modifier
                     .padding(top=20.dp, start = 10.dp)
                     .clickable {
-
+                        navController.navigate("Community")
                     }
             )
             Column{
