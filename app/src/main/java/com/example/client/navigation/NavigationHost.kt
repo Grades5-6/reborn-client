@@ -11,6 +11,7 @@ import com.example.client.screen.LoginScreen
 import com.example.client.screen.MainScreen
 import com.example.client.screen.MainOnboardingScreen
 import com.example.client.screen.MyPageScreen
+import com.example.client.screen.community.CommunityScreen
 import com.example.client.screen.mypage.EditInterestedFieldScreen
 import com.example.client.screen.mypage.EditProfileScreen
 import com.example.client.screen.mypage.EditRegionScreen
@@ -83,6 +84,13 @@ fun NavigationHost(
         composable(NavRoutes.MyPageProfile.route) {
             EditProfileScreen(
                 editProfileViewModel = viewModels.editProfileViewModel,
+                navController = navController
+            )
+        }
+
+        composable(NavRoutes.Community.route){
+            CommunityScreen(
+                viewModel = viewModels.communityViewModel,
                 navController = navController
             )
         }
