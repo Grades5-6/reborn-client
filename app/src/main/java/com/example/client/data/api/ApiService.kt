@@ -7,6 +7,7 @@ import com.example.client.data.model.response.LicensesGetResponse
 import com.example.client.data.model.request.mypage.EditInterestedRequest
 import com.example.client.data.model.request.mypage.EditProfileRequest
 import com.example.client.data.model.request.mypage.EditRegionRequest
+import com.example.client.data.model.response.CommunityGetResponse
 import com.example.client.data.model.response.JobPostResponse
 import com.example.client.data.model.response.MyPageResponse
 import retrofit2.Call
@@ -59,6 +60,6 @@ interface ApiService {
 
     /** 커뮤니티 */
     @GET("community/posts") //커뮤니티 더미데이터 불러오기
-    suspend fun getCommunity(): Response<Void>
+    suspend fun getCommunity(): Response<List<CommunityGetResponse>>
 
 }

@@ -12,12 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,21 +30,32 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.client.R
 import com.example.client.component.all.ButtonColorEnum
-import com.example.client.component.all.ButtonComponent
 import com.example.client.component.all.TabLayoutComponent
-import com.example.client.component.community.FloatingButtonComponent
 import com.example.client.component.community.OptionList
 import com.example.client.component.community.OptionListComponent
 import com.example.client.component.community.Post
 import com.example.client.component.community.PostListItemComponent
+import com.example.client.data.model.viewmodel.CommunityViewModel
 
 @Composable
-fun CommunityScreen() {
+fun CommunityScreen(
+    viewModel: CommunityViewModel,
+    navController: NavController
+) {
+
+    val postState by viewModel.postState.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getPost()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -133,76 +148,25 @@ fun CommunityScreen() {
                             }
                         }
                     }
-
                 }
                 item {
                     HorizontalDivider(
                         modifier = Modifier
                             .fillMaxWidth()
                     )
+                }
+
+                items(postState) { postResponse ->
                     PostListItemComponent(
                         post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
+                            author = postResponse.author,
+                            title = postResponse.title,
+                            content = postResponse.content,
+                            likes = postResponse.likes_count,
+                            comments = postResponse.comments_count
                         )
                     )
-                    PostListItemComponent(
-                        post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
-                        )
-                    )
-                    PostListItemComponent(
-                        post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
-                        )
-                    )
-                    PostListItemComponent(
-                        post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
-                        )
-                    )
-                    PostListItemComponent(
-                        post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
-                        )
-                    )
-                    PostListItemComponent(
-                        post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
-                        )
-                    )
-                    PostListItemComponent(
-                        post = Post(
-                            author = "감자도리",
-                            title = "매장쪽 질문",
-                            content = "지금까지",
-                            likes = 8,
-                            comments = 19
-                        )
-                    )
+
                 }
             }
         }
@@ -216,11 +180,5 @@ fun CommunityScreen() {
                 .padding(15.dp)
         )
     }
-}
 
-
-@Preview
-@Composable
-fun CommunityScreenPreview() {
-    CommunityScreen()
 }
