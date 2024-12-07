@@ -63,6 +63,7 @@ import com.example.client.component.all.TabLayoutComponent
 import com.example.client.data.model.viewmodel.JobPostViewModel
 import com.example.client.domain.TestUserInfo
 import androidx.compose.ui.platform.LocalContext
+import com.example.client.component.all.ButtonColorEnum
 import com.example.client.component.mypage.CertificateItemComponent
 import com.example.client.data.model.response.LicenseResponse
 import com.example.client.data.model.response.LicensesGetResponse
