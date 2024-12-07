@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -46,6 +47,17 @@ fun ButtonComponent(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview
+@Composable
+fun ButtonComponentPreview() {
+    ButtonComponent(
+        buttonText = "String Button Text",
+        buttonColorType = ButtonColorEnum.LightGreen,//or Green
+        onClick = { },
+
+    )
 }
 /*
         ButtonComponent(

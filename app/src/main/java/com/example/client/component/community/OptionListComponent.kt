@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -33,12 +34,16 @@ data class OptionList(
 )
 
 @Composable
-fun OptionListComponent(optionList: OptionList) {
+fun OptionListComponent(
+    optionList: OptionList,
+    modifier: Modifier = Modifier) {
     var selectedField by remember { mutableStateOf<String?>(null) }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .then(modifier)
+            .fillMaxSize()
     ) {
         items(optionList.options) { option ->
             val isSelected = selectedField == option

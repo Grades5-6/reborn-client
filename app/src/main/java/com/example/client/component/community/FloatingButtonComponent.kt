@@ -16,9 +16,11 @@ import com.example.client.R
 @Composable
 fun FloatingButtonComponent(
     onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         modifier = Modifier
+            .then(modifier)
             .size(120.dp) // FAB의 크기
             .clickable(onClick = onClick),
         shape = CircleShape,
@@ -35,7 +37,7 @@ fun FloatingButtonComponent(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun PreviewFloatingButtonComponent() {
     FloatingButtonComponent(
