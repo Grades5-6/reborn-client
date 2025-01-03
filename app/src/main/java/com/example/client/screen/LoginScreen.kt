@@ -62,7 +62,8 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun LoginScreen(
     myPageViewModel: MyPageViewModel,
-    navController: NavController) {
+    navController: NavController
+) {
     val context = LocalContext.current
 
     val user by myPageViewModel.user.collectAsState()
@@ -104,11 +105,16 @@ fun LoginScreen(
                                     val user = auth.currentUser
                                     // 사용자 정보 업데이트 로직
                                 } else {
-                                    Log.w("GoogleSignIn", "signInWithCredential:failure", task.exception)
+                                    Log.w(
+                                        "GoogleSignIn",
+                                        "signInWithCredential:failure",
+                                        task.exception
+                                    )
                                     // 실패 처리 로직
                                 }
                             }
                     }
+
                     else -> {
                         Log.d("GoogleSignIn", "No ID token!")
                     }
@@ -250,13 +256,13 @@ fun LoginScreen(
                         //todo: 자격증 받아오기
                         println(TestUserInfo.USERIMG)
 
-                        if(TestUserInfo.EMPLOYMENT == "" || TestUserInfo.INTEREST.isEmpty() || TestUserInfo.REGION == ""){
+                        if (TestUserInfo.EMPLOYMENT == "" || TestUserInfo.INTEREST.isEmpty() || TestUserInfo.REGION == "") {
                             navController.navigate("MainOnboarding")
-                        }else{
+                        } else {
                             navController.navigate("Main")
                         }
                     } else {
-                        Toast.makeText(context,"로그인 실패",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier
@@ -283,7 +289,23 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(10.dp)
                     .align(Alignment.CenterHorizontally)
-                    .clickable { showOneTapUI = true }
+                    .clickable {
+                        showOneTapUI = true
+                        val user = Firebase.auth.currentUser
+                        user?.let {
+                            // Name, email address, and profile photo Url
+                            val name = it.displayName
+                            val email = it.email
+                            val photoUrl = it.photoUrl
+                            // Check if user's email is verified
+                            val emailVerified = it.isEmailVerified
+                            // The user's ID, unique to the Firebase project. Do NOT use this value to
+                            // authenticate with your backend server, if you have one. Use
+                            // FirebaseUser.getIdToken() instead.
+                            val uid = it.uid
+                            Log.d("AuthInfo", "$name, $email 정보")
+                        }
+                    }
             )
 
             Image(
