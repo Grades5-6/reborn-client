@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,12 +42,28 @@ import androidx.navigation.NavController
 import com.example.client.R
 import com.example.client.data.model.viewmodel.MyPageViewModel
 import com.example.client.domain.TestUserInfo
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
-// [todo]: login view 출력
 @Composable
 fun LoginScreen(
     myPageViewModel: MyPageViewModel,
-    navController: NavController) {
+    navController: NavController
+) {
     val context = LocalContext.current
 
     val user by myPageViewModel.user.collectAsState()
@@ -54,6 +71,81 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var loginStatus by remember { mutableStateOf<String?>(null) }
+
+    // google login
+    val oneTapClient = Identity.getSignInClient(context)
+    val auth: FirebaseAuth = Firebase.auth
+    var showOneTapUI by remember { mutableStateOf(false) }
+
+    val signInRequest = BeginSignInRequest.builder()
+        .setGoogleIdTokenRequestOptions(
+            BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                .setSupported(true)
+                .setServerClientId(context.getString(R.string.client_id))
+                .setFilterByAuthorizedAccounts(false)
+                .build()
+        )
+        .build()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            try {
+                val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
+                val idToken = credential.googleIdToken
+                when {
+                    idToken != null -> {
+                        Log.d("GoogleSignIn", "Got ID token.")
+                        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                        auth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d("GoogleSignIn", "signInWithCredential:success")
+                                    val user = auth.currentUser
+                                    // 사용자 정보 업데이트 로직
+                                } else {
+                                    Log.w(
+                                        "GoogleSignIn",
+                                        "signInWithCredential:failure",
+                                        task.exception
+                                    )
+                                    // 실패 처리 로직
+                                }
+                            }
+                    }
+
+                    else -> {
+                        Log.d("GoogleSignIn", "No ID token!")
+                    }
+                }
+            } catch (e: ApiException) {
+                // ...
+            }
+        }
+    }
+
+    LaunchedEffect(showOneTapUI) {
+        if (showOneTapUI) {
+            oneTapClient.beginSignIn(signInRequest)
+                .addOnSuccessListener { result ->
+                    try {
+                        val intentSender = result.pendingIntent.intentSender
+                        // IntentSender를 IntentSenderRequest로 래핑하여 launch에 전달
+                        val intentSenderRequest = IntentSenderRequest.Builder(intentSender).build()
+                        launcher.launch(intentSenderRequest)
+                    } catch (e: Exception) {
+                        Log.e("GoogleSignIn", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("GoogleSignIn", "One Tap UI failed: ${e.localizedMessage}")
+                }
+            showOneTapUI = false
+        }
+    }
+
+
 
     Box(
         modifier = Modifier
@@ -164,13 +256,13 @@ fun LoginScreen(
                         //todo: 자격증 받아오기
                         println(TestUserInfo.USERIMG)
 
-                        if(TestUserInfo.EMPLOYMENT == "" || TestUserInfo.INTEREST.isEmpty() || TestUserInfo.REGION == ""){
+                        if (TestUserInfo.EMPLOYMENT == "" || TestUserInfo.INTEREST.isEmpty() || TestUserInfo.REGION == "") {
                             navController.navigate("MainOnboarding")
-                        }else{
+                        } else {
                             navController.navigate("Main")
                         }
                     } else {
-                        Toast.makeText(context,"로그인 실패",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier
@@ -186,19 +278,45 @@ fun LoginScreen(
             }
         }
 
-
-        //todo : 카카오 로그인 버튼 및 onclick event
-        Image(
-            painter = painterResource(id = R.drawable.icon_kakaologin),
-            contentDescription = "Icon_kakaologin",
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(5f)
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 30.dp)
-                .clickable {  }
-            //loginWithKakao(context)
-        )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.btn_googlelogin),
+                contentDescription = "Icon_googlelogin",
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                        showOneTapUI = true
+                        val user = Firebase.auth.currentUser
+                        user?.let {
+                            // Name, email address, and profile photo Url
+                            val name = it.displayName
+                            val email = it.email
+                            val photoUrl = it.photoUrl
+                            // Check if user's email is verified
+                            val emailVerified = it.isEmailVerified
+                            // The user's ID, unique to the Firebase project. Do NOT use this value to
+                            // authenticate with your backend server, if you have one. Use
+                            // FirebaseUser.getIdToken() instead.
+                            val uid = it.uid
+                            Log.d("AuthInfo", "$name, $email 정보")
+                        }
+                    }
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.icon_kakaologin),
+                contentDescription = "Icon_kakaologin",
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+
+            )
+        }
+
     }
 }
 

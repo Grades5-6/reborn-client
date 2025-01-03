@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">client</string>
     <string name="loading_message">%s님께\n추천드릴 공고를\n찾고 있어요</string>
+    <string name="client_id">415188560778-pg3fviku3g5ng0glg9gu3vcchsamun2i.apps.googleusercontent.com</string>
 </resources>

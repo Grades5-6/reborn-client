@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "415188560778",
+    "project_id": "even-affinity-446609-k1",
+    "storage_bucket": "even-affinity-446609-k1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415188560778:android:46462d2778c2f317a27673",
+        "android_client_info": {
+          "package_name": "com.example.client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSyQ9IfttQ_MDpWJcsP1PrTRrp9viXhOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
