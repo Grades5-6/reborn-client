@@ -42,8 +42,23 @@ import androidx.navigation.NavController
 import com.example.client.R
 import com.example.client.data.model.viewmodel.MyPageViewModel
 import com.example.client.domain.TestUserInfo
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
-// [todo]: login view 출력
 @Composable
 fun LoginScreen(
     myPageViewModel: MyPageViewModel,
@@ -55,6 +70,76 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var loginStatus by remember { mutableStateOf<String?>(null) }
+
+    // google login
+    val oneTapClient = Identity.getSignInClient(context)
+    val auth: FirebaseAuth = Firebase.auth
+    var showOneTapUI by remember { mutableStateOf(false) }
+
+    val signInRequest = BeginSignInRequest.builder()
+        .setGoogleIdTokenRequestOptions(
+            BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                .setSupported(true)
+                .setServerClientId(context.getString(R.string.client_id))
+                .setFilterByAuthorizedAccounts(false)
+                .build()
+        )
+        .build()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            try {
+                val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
+                val idToken = credential.googleIdToken
+                when {
+                    idToken != null -> {
+                        Log.d("GoogleSignIn", "Got ID token.")
+                        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                        auth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d("GoogleSignIn", "signInWithCredential:success")
+                                    val user = auth.currentUser
+                                    // 사용자 정보 업데이트 로직
+                                } else {
+                                    Log.w("GoogleSignIn", "signInWithCredential:failure", task.exception)
+                                    // 실패 처리 로직
+                                }
+                            }
+                    }
+                    else -> {
+                        Log.d("GoogleSignIn", "No ID token!")
+                    }
+                }
+            } catch (e: ApiException) {
+                // ...
+            }
+        }
+    }
+
+    LaunchedEffect(showOneTapUI) {
+        if (showOneTapUI) {
+            oneTapClient.beginSignIn(signInRequest)
+                .addOnSuccessListener { result ->
+                    try {
+                        val intentSender = result.pendingIntent.intentSender
+                        // IntentSender를 IntentSenderRequest로 래핑하여 launch에 전달
+                        val intentSenderRequest = IntentSenderRequest.Builder(intentSender).build()
+                        launcher.launch(intentSenderRequest)
+                    } catch (e: Exception) {
+                        Log.e("GoogleSignIn", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("GoogleSignIn", "One Tap UI failed: ${e.localizedMessage}")
+                }
+            showOneTapUI = false
+        }
+    }
+
+
 
     Box(
         modifier = Modifier
@@ -198,7 +283,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(10.dp)
                     .align(Alignment.CenterHorizontally)
-                    .clickable { }
+                    .clickable { showOneTapUI = true }
             )
 
             Image(
@@ -206,8 +291,7 @@ fun LoginScreen(
                 contentDescription = "Icon_kakaologin",
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .clickable { }
-                //loginWithKakao(context)
+
             )
         }
 
