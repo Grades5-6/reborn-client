@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -186,19 +187,30 @@ fun LoginScreen(
             }
         }
 
-
-        //todo : 카카오 로그인 버튼 및 onclick event
-        Image(
-            painter = painterResource(id = R.drawable.icon_kakaologin),
-            contentDescription = "Icon_kakaologin",
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(5f)
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 30.dp)
-                .clickable {  }
-            //loginWithKakao(context)
-        )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.btn_googlelogin),
+                contentDescription = "Icon_googlelogin",
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .clickable { }
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.icon_kakaologin),
+                contentDescription = "Icon_kakaologin",
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable { }
+                //loginWithKakao(context)
+            )
+        }
+
     }
 }
 
