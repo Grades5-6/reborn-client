@@ -8,6 +8,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // Kakao SDK 초기화
-        //KakaoSdk.init(this, APP_KEY)
+        KakaoSdk.init(this, APP_KEY)
     }
 }
